@@ -1,35 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <style> body { margin: 0; background-color: #000; } </style>
-  <script src="//unpkg.com/3d-force-graph"></script>
+  <style> body { margin: 0; background-color: #000; overflow: hidden; } </style>
   <script src="//unpkg.com/three"></script>
+  <script src="//unpkg.com/3d-force-graph"></script>
 </head>
 <body>
   <div id="3d-graph"></div>
   <script>
-    // 这是你的数据资产区，以后改这里就能变现成不同的产品
     const myData = {
       nodes: [
         { id: '梵高', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg/300px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg' },
-        { id: '莫奈', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Claude_Monet%2C_Impressions%2C_soleil_levant.jpg/300px-Claude_Monet%2C_Impressions%2C_soleil_levant.jpg' },
-        { id: '达利', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/The_Persistence_of_Memory.jpg/300px-The_Persistence_of_Memory.jpg' }
+        { id: '莫奈', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Claude_Monet%2C_Impressions%2C_soleil_levant.jpg/300px-Claude_Monet%2C_Impressions%2C_soleil_levant.jpg' }
       ],
-      links: [
-        { source: '梵高', target: '莫奈' },
-        { source: '莫奈', target: '达利' }
-      ]
+      links: [{ source: '梵高', target: '莫奈' }]
     };
 
+    // 确保在 3D 引擎加载后再执行
     const Graph = ForceGraph3D()(document.getElementById('3d-graph'))
       .nodeThreeObject(node => {
-        // Vibe Coding 秘诀：把球体换成立体画作方块
-        const imgTexture = new THREE.TextureLoader().load(node.img);
+        const loader = new THREE.TextureLoader();
+        // 设置图片跨域，防止图片不显示
+        loader.setCrossOrigin('anonymous');
+        const imgTexture = loader.load(node.img);
         const material = new THREE.MeshBasicMaterial({ map: imgTexture });
         const geometry = new THREE.BoxGeometry(15, 15, 15);
         return new THREE.Mesh(geometry, material);
       })
       .graphData(myData);
+      
+    // 自动调整视角，防止方块太远看不见
+    Graph.zoomToFit(400);
   </script>
 </body>
 </html>
