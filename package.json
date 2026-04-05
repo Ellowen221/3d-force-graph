@@ -49,9 +49,9 @@
   "dependencies": {
     "accessor-fn": "1",
     "kapsule": "^1.16",
-    "three": ">=0.118 <1",
+    "three": ">=0.179 <1",
     "three-forcegraph": "1",
-    "three-render-objects": "^1.35"
+    "three-render-objects": "^1.41"
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",

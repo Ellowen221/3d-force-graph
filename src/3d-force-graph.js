@@ -180,10 +180,11 @@ export default Kapsule({
     camera: state => state.renderObjs.camera(), // Expose camera
     renderer: state => state.renderObjs.renderer(), // Expose renderer
     controls: state => state.renderObjs.controls(), // Expose controls
-    tbControls: state => state.renderObjs.tbControls(), // To be deprecated
-    _destructor: function() {
+    _destructor: function(state) {
       this.pauseAnimation();
       this.graphData({ nodes: [], links: []});
+      state.forceGraph._destructor?.();
+      state.renderObjs._destructor();
     },
     ...linkedFGMethods,
     ...linkedRenderObjsMethods
